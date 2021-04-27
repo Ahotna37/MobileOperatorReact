@@ -1,0 +1,12 @@
+D:\учебка\3 курс\Сайты\MO\DAL\bin\Debug\netcoreapp3.1\DAL.deps.json
+D:\учебка\3 курс\Сайты\MO\DAL\bin\Debug\netcoreapp3.1\DAL.dll
+D:\учебка\3 курс\Сайты\MO\DAL\bin\Debug\netcoreapp3.1\DAL.pdb
+D:\учебка\3 курс\Сайты\MO\DAL\obj\Debug\netcoreapp3.1\DAL.csprojAssemblyReference.cache
+D:\учебка\3 курс\Сайты\MO\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfoInputs.cache
+D:\учебка\3 курс\Сайты\MO\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfo.cs
+D:\учебка\3 курс\Сайты\MO\DAL\obj\Debug\netcoreapp3.1\DAL.csproj.CoreCompileInputs.cache
+D:\учебка\3 курс\Сайты\MO\DAL\obj\Debug\netcoreapp3.1\DAL.dll
+D:\учебка\3 курс\Сайты\MO\DAL\obj\Debug\netcoreapp3.1\DAL.pdb
+D:\учебка\3 курс\Сайты\MO\DAL\bin\Debug\netcoreapp3.1\DAL.runtimeconfig.json
+D:\учебка\3 курс\Сайты\MO\DAL\bin\Debug\netcoreapp3.1\DAL.runtimeconfig.dev.json
+D:\учебка\3 курс\Сайты\MO\DAL\obj\Debug\netcoreapp3.1\DAL.genruntimeconfig.cache

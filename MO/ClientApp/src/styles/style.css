@@ -1,0 +1,20 @@
+/**
+ * стили проекта
+ */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+.navIcon {
+  display: none !important;
+}
+@media (max-width: 900px) {
+  .navigation {
+    display: none;
+  }
+  .navIcon {
+    display: block !important;
+  }
+}
