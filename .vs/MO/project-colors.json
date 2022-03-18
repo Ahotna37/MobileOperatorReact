@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "37755feb-dab4-4ffd-883f-54baa133ed59": {
+      "ProjectGuid": "37755feb-dab4-4ffd-883f-54baa133ed59",
+      "DisplayName": "MO",
+      "ColorIndex": 0
+    },
+    "459899c5-9365-4486-9f73-9da6d5d8d2a1": {
+      "ProjectGuid": "459899c5-9365-4486-9f73-9da6d5d8d2a1",
+      "DisplayName": "MOApi",
+      "ColorIndex": 1
+    },
+    "3ba61cd3-08fd-47e7-8493-7320efd64144": {
+      "ProjectGuid": "3ba61cd3-08fd-47e7-8493-7320efd64144",
+      "DisplayName": "DAL",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Прочие файлы",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}

@@ -25,7 +25,7 @@ export default function ItemList({ client = {} }) {
   const onClickDelete = () => {
     Client.deleteClient((res) => console.log(res), info.id);
   };
-  const url = "https://localhost:44300/api/Client/";
+  const url = "https://localhost:5001/api/Client/";
   const onBlur = () => {
     fetch(url + info.id, {
       method: "PUT",

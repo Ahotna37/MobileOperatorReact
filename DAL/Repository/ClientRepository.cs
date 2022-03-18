@@ -27,7 +27,8 @@ namespace DAL.Repository
             {
                 return null;
             }
-            _context.Clients.Remove(item);
+            item.LockoutEnabled = true;
+            //_context.Clients.Remove(item);
 
             try
             {
@@ -87,7 +88,7 @@ namespace DAL.Repository
         {
             try
             {
-                var client = await _context.Clients.Where(i => i.IsPhysCl == false).ToListAsync();
+                var client = await _context.Clients.Where(i => i.IsPhysCl == false && i.LockoutEnabled == false).ToListAsync();
                 if (client == null)
                 {
                     return null;
@@ -106,7 +107,7 @@ namespace DAL.Repository
         {
             try
             {
-                var client = await _context.Clients.Where(i => i.IsPhysCl == true).ToListAsync();
+                var client = await _context.Clients.Where(i => i.IsPhysCl == true && i.LockoutEnabled == false).ToListAsync();
                 if (client == null)
                 {
                     return null;

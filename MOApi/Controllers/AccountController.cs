@@ -5,6 +5,7 @@ using DAL.Models;
 using DAL.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Data.Entity;
 
 namespace MOApi.Controllers
 {
@@ -168,10 +169,11 @@ namespace MOApi.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.LoginPhoneNumber, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    var clientByLogin = _context.Clients.FirstOrDefault(i => i.PhoneNumber == model.LoginPhoneNumber);
                     var msg = new
                     {
                         message = "Выполнен вход пользователем: " + model.LoginPhoneNumber,
-                        //id = model.i
+                        id = clientByLogin.Id,
                     };
                     return Ok(msg);
                 }
@@ -183,7 +185,7 @@ namespace MOApi.Controllers
                         message = "Вход не выполнен.",
                         error = ModelState.Values.SelectMany(e => e.Errors.Select(er => er.ErrorMessage))
                     };
-                    return Ok(errorMsg);
+                    return NotFound(errorMsg);
                 }
             }
             else
@@ -194,7 +196,7 @@ namespace MOApi.Controllers
                     error = ModelState.Values.SelectMany(e =>
                     e.Errors.Select(er => er.ErrorMessage))
                 };
-                return Ok(errorMsg);
+                return NotFound(errorMsg);
             }
         }
         /// <summary>

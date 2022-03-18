@@ -7145,19 +7145,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Антон\\.nuget\\packages\\": {}
+    "C:\\Users\\ahotna\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\учебка\\3 курс\\Сайты\\MO\\DAL\\DAL.csproj",
+      "projectUniqueName": "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "D:\\учебка\\3 курс\\Сайты\\MO\\DAL\\DAL.csproj",
-      "packagesPath": "C:\\Users\\Антон\\.nuget\\packages\\",
-      "outputPath": "D:\\учебка\\3 курс\\Сайты\\MO\\DAL\\obj\\",
+      "projectPath": "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\DAL\\DAL.csproj",
+      "packagesPath": "C:\\Users\\ahotna\\.nuget\\packages\\",
+      "outputPath": "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Антон\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ahotna\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7233,7 +7233,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

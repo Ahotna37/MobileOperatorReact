@@ -66,7 +66,7 @@ namespace MOApi
             {
                 options.AddPolicy("AllowMyOrigin",
                 builder => builder
-                    .WithOrigins("http://localhost:3000")
+                    .WithOrigins("http://localhost:3000", "http://localhost:19006")
                     .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
@@ -121,7 +121,7 @@ namespace MOApi
                 endpoints.MapControllers();
             });
             //создание роли
-            CreateUserRoles(services).Wait();
+            // CreateUserRoles(services).Wait();
 
 
         }

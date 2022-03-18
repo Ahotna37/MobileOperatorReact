@@ -6871,19 +6871,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Антон\\.nuget\\packages\\": {}
+    "C:\\Users\\ahotna\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\учебка\\3 курс\\Сайты\\MO\\MOApi\\MOApi.csproj",
+      "projectUniqueName": "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\MOApi\\MOApi.csproj",
       "projectName": "MOApi",
-      "projectPath": "D:\\учебка\\3 курс\\Сайты\\MO\\MOApi\\MOApi.csproj",
-      "packagesPath": "C:\\Users\\Антон\\.nuget\\packages\\",
-      "outputPath": "D:\\учебка\\3 курс\\Сайты\\MO\\MOApi\\obj\\",
+      "projectPath": "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\MOApi\\MOApi.csproj",
+      "packagesPath": "C:\\Users\\ahotna\\.nuget\\packages\\",
+      "outputPath": "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\MOApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Антон\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ahotna\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6897,8 +6897,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\учебка\\3 курс\\Сайты\\MO\\DAL\\DAL.csproj": {
-              "projectPath": "D:\\учебка\\3 курс\\Сайты\\MO\\DAL\\DAL.csproj"
+            "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\DAL\\DAL.csproj": {
+              "projectPath": "D:\\учебка\\3 курс\\Сайты\\MO Беляев\\DAL\\DAL.csproj"
             }
           }
         }
@@ -6964,7 +6964,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

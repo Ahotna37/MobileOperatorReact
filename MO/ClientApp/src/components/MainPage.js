@@ -81,7 +81,6 @@ export default function MainPageReturn({ setTitle }) {
   });
   const getByIdSuccess = (data) => {
     setUser(data);
-    console.log(data);
     const buf = [...tiers];
     buf[0].left = data.freeMin;
     buf[1].left = data.freeGb;
@@ -96,7 +95,6 @@ export default function MainPageReturn({ setTitle }) {
   });
   const getTarByIdSuccess = (data) => {
     setTariff(data[0]);
-    console.log(data);
   };
   const GetTariffForPhysOrLegal = () => {
     Tariff.GetTariffForPhysOrLegal(

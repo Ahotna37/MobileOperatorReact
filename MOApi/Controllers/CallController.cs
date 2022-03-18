@@ -27,6 +27,10 @@ namespace MOApi.Controllers
         [HttpGet]
         public IEnumerable<Call> GetAll()
         {
+            /*            Call call = new Call() { CostCall = 123 };
+                        List<Call> calls = new List<Call>();
+                        calls.Add(call);
+                        return calls;*/
             return _context.Calls;
         }
         /// <summary>

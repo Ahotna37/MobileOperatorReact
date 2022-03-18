@@ -83,7 +83,7 @@ export default function SignIn() {
    */
   async function CheckAuthorisationUser() {
     let result = await fetch(
-      "https://localhost:44300/api/Account/isAuthenticated",
+      "https://localhost:5001/api/Account/isAuthenticated",
       {
         method: "POST",
         headers: {

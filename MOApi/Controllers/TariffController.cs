@@ -33,7 +33,7 @@ namespace MOApi.Controllers
         /// <summary>
         /// получение тарифа подключенного к определенному клиенту
         /// </summary>
-        [HttpGet("{idClient}")]
+        [HttpGet("user/{idClient}")]
         public async Task<IActionResult> GetTariffForPhysOrLegal([FromRoute] string idClient)
         {
             if (!ModelState.IsValid)
@@ -50,10 +50,29 @@ namespace MOApi.Controllers
             }
             return Ok(tar);
         }
-        /// <summary>
-        /// создание тарифа
-        /// </summary>
-        [HttpPost]
+
+
+        [HttpGet("{idTariff}")]
+        public async Task<IActionResult> GetTariffById([FromRoute] int idTariff)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var tar = await _context.TariffPlans.Where(i => i.Id == idTariff).FirstOrDefaultAsync();
+
+            if (tar == null)
+            {
+                return NotFound();
+            }
+            return Ok(tar);
+        }
+
+
+    /// <summary>
+    /// создание тарифа
+    /// </summary>
+    [HttpPost]
         public async Task<IActionResult> CreateNewTariff([FromBody] TariffPlan tar)
         {
             if (!ModelState.IsValid)

@@ -13,7 +13,7 @@ const T = {
 /**
  * адрес бэкэнда
  */
-const url = "https://localhost:44300/api/";
+const url = "https://localhost:5001/api/";
 /**
  * Контроллеры бэкэнда
  */
