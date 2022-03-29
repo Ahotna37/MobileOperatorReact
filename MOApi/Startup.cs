@@ -41,6 +41,9 @@ namespace MOApi
             options.UseSqlServer(connection));
             services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
+/*            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<ApplicationDbContext>();*/
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = ".AspNetCore.Identity.Application";
@@ -120,8 +123,9 @@ namespace MOApi
             {
                 endpoints.MapControllers();
             });
+
             //создание роли
-            // CreateUserRoles(services).Wait();
+            //CreateUserRoles(services).Wait();
 
 
         }

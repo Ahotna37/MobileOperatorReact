@@ -22,6 +22,7 @@ const CLASS = {
   Account: "Account",
   Call: "Call",
   Tariff: "Tariff",
+  UserTariff: "Tariff/user",
   AddBalance: "AddBalance",
   Service: "Service",
 };
@@ -41,12 +42,14 @@ function request(methodClass, requestType, method, data, options, success) {
   if (method) {
     method = "/" + method;
   }
+  // console.log(data);
   const isDataEmpty = Object.keys(data).length === 0;
+
   if (isDataEmpty || requestType === T.PUT || requestType === T.GET) {
     urlEncodedData = "?" + convertJSONToUrlEncoded(data);
   }
   let response = url + methodClass + method + urlEncodedData;
-  console.log(data);
+  // console.log(data);
   /**
    * реализации феч запросов
    */
@@ -64,7 +67,8 @@ function request(methodClass, requestType, method, data, options, success) {
         credentials: "include",
       })
         .then((res) => res.json())
-        .then((data) => success(data));
+        .then((data) => success(data))
+        // .catch(() => window.location.replace("/authorization"));
       break;
     case T.POST:
       fetch(response, {
@@ -86,7 +90,8 @@ function request(methodClass, requestType, method, data, options, success) {
             return new Promise((res) => res({}));
           }
         })
-        .then((res) => success(res));
+        .then((res) => success(res))
+        .catch(() => window.location.replace("/authorization"));
       break;
     case T.PUT:
       fetch(response, {
@@ -100,7 +105,8 @@ function request(methodClass, requestType, method, data, options, success) {
         },
         credentials: "include",
         body: JSON.stringify(data),
-      }).then((res) => success(res));
+      }).then((res) => success(res))
+      .catch(() => window.location.replace("/authorization"));
       break;
     case T.DELETE:
       fetch(response, {
@@ -114,7 +120,8 @@ function request(methodClass, requestType, method, data, options, success) {
         },
         credentials: "include",
         body: JSON.stringify(data),
-      }).then((res) => success(res));
+      }).then((res) => success(res))
+      .catch(() => window.location.replace("/authorization"));
       break;
     default:
       console.log("Такого запроса не существует!");
@@ -145,11 +152,9 @@ export const Client = {
  */
 export const Account = {
   auth: (success, body) => {
-    // console.log(body);
     request(CLASS.Account, T.POST, "Login", body, {}, success);
   },
   returnClient: (success, body) => {
-    console.log(body);
     request(CLASS.Account, T.POST, "isAuthenticated", {}, {}, success);
   },
   createClient: (success, body) => {
@@ -171,14 +176,15 @@ export const Call = {
  * запросы для контроллера - тарифы
  */
 export const Tariff = {
-  GetAllTariff: (success, id) => {
-    request(CLASS.Tariff, T.GET, id, "all", {}, success);
+  GetAllTariff: (success) => {
+    request(CLASS.Tariff, T.GET, "", "all", {}, success);
   },
   AddNewTarForClient: (success, body) => {
-    request(CLASS.Tariff, T.POST, "connectnewtariff", body, {}, success);
+    console.log(body);
+    request(CLASS.Tariff, T.PUT, localStorage.idClient, body, {}, success);
   },
   GetTariffForPhysOrLegal: (success, id) => {
-    request(CLASS.Tariff, T.GET, id, {}, {}, success);
+    request(CLASS.UserTariff, T.GET, id, {}, {}, success);
   },
 };
 /**

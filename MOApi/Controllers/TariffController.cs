@@ -83,11 +83,39 @@ namespace MOApi.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetTariff", new { id = tar.Id }, tar);
         }
+
+        /// <summary>
+        /// добавление новой услуги клиенту
+        /// </summary>
+        [HttpPost("connecttar/{idClient}")]
+        public async Task<IActionResult> AddTariffForClient([FromRoute] string idClient, [FromBody] int tarId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var oldConn = _context.ConnectTariffs.Where(i => i.IdClient == tarVM.idClient && i.DateConnectTariffEnd == null).FirstOrDefault();
+            //oldConn.DateConnectTariffEnd = DateTime.Now;
+            var newTar = await _context.TariffPlans.Where(i => i.Id == tarId).FirstOrDefaultAsync();
+            var oldTarConnect = await _context.ConnectTariffs.Where(i => i.IdClient == idClient & i.DateConnectTariffEnd == null).FirstOrDefaultAsync();
+            oldTarConnect.DateConnectTariffEnd = DateTime.Now;
+            _context.ConnectTariffs.Add(new ConnectTariff()
+            {
+                IdClient = idClient,
+                DateConnectTariffBegin = DateTime.Now,
+                DateConnectTariffEnd = null,
+                IdTariffPlan = tarId
+            });
+            //_context.TariffPlans.Add(tarVM);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
         /// <summary>
         /// изменение тарифа
         /// </summary>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTariff([FromRoute] int id, [FromBody] TariffPlan tar)
+        public async Task<IActionResult> UpdateTariff([FromRoute] int id, [FromBody] TariffViewModel tar)
         {
             if (!ModelState.IsValid)
             {
@@ -99,17 +127,17 @@ namespace MOApi.Controllers
                 return NotFound();
             }
             //блок перезаписи данных
-            item.Name = tar.Name;
-            item.CanConnectThisTar = tar.CanConnectThisTar;
-            item.CostChangeTar = tar.CostChangeTar;
-            item.CostOneMinCallCity = tar.CostOneMinCallCity;
-            item.CostOneMinCallInternation = tar.CostOneMinCallInternation;
-            item.CostOneMinCallOutCity = tar.CostOneMinCallOutCity;
-            item.CostSms = tar.CostSms;
-            item.FreeMinuteForMonth = tar.FreeMinuteForMonth;
-            item.IntGb = tar.IntGb;
-            item.IsPhysTar = tar.IsPhysTar;
-            item.SubcriptionFee = tar.SubcriptionFee;
+            item.Name = tar.name;
+            item.CanConnectThisTar = tar.canConnectThisTar;
+            item.CostChangeTar = tar.costChangeTar;
+            item.CostOneMinCallCity = tar.costOneMinCallCity;
+            item.CostOneMinCallInternation = tar.costOneMinCallInternation;
+            item.CostOneMinCallOutCity = tar.costOneMinCallOutCity;
+            item.CostSms = tar.costSms;
+            item.FreeMinuteForMonth = tar.freeMinuteForMonth;
+            item.IntGb = tar.intGb;
+            item.IsPhysTar = tar.isPhysTar;
+            item.SubcriptionFee = tar.subcriptionFee;
             _context.TariffPlans.Update(item);
             await _context.SaveChangesAsync();
             return NoContent();

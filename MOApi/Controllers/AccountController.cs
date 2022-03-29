@@ -106,7 +106,8 @@ namespace MOApi.Controllers
                     var msg = new
                     {
                         message = "Добавлен новый пользователь: " +
-                    client.UserName
+                    client.UserName,
+                        id = client.Id
                     };
                     if (client.IsPhysCl)
                         conTar = new ConnectTariff

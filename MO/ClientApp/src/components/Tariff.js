@@ -63,7 +63,7 @@ export default function Album({ setTitle }) {
     setTitle("Тарифы");
     Tariff.GetAllTariff(
       (data) => setTariff(data),
-      localStorage.getItem("id"),
+      // localStorage.getItem("idTariff"),
       {}
     );
   }, []);
@@ -71,9 +71,10 @@ export default function Album({ setTitle }) {
    * феч для добавления тарифа
    */
   const onClickAddNewTar = (tarif) => {
+    console.log(tarif);
     Tariff.AddNewTarForClient({
-      IdClient: localStorage.getItem("id"),
-      IdTariffPlan: tarif.IdTariffPlan,
+      // IdTariffPlan: tarif.IdTariffPlan,
+      tarif
     });
   };
   /**

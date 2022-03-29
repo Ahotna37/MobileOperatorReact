@@ -95,13 +95,17 @@ export default function MainPageReturn({ setTitle }) {
   });
   const getTarByIdSuccess = (data) => {
     setTariff(data[0]);
+    localStorage.setItem("idTariff", data[0].id);
   };
-  const GetTariffForPhysOrLegal = () => {
+  const GetTariffForPhysOrLegal = () => { // вернуть получение тарифа
     Tariff.GetTariffForPhysOrLegal(
       getTarByIdSuccess,
       localStorage.getItem("id")
     );
   };
+  
+  //   const GetTariffForPhysOrLegal = () => {
+  // };
 
   /**
    * данные страницы по-умолчанию для загрузки страницы без загрузки клиента из БД
@@ -167,14 +171,14 @@ export default function MainPageReturn({ setTitle }) {
         >
           {user.name ? user.surName + " " + user.name : user.nameOrganization}
         </Typography>
-        <Typography
+        {/* <Typography
           variant="h5"
           align="center"
           color="textSecondary"
           component="p"
         >
           Активный тариф: {tariff.name}
-        </Typography>
+        </Typography> */}
         <Typography
           variant="h5"
           align="center"

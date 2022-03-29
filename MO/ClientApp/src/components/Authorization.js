@@ -118,11 +118,11 @@ export default function SignIn() {
     authorisationUser();
   };
   const returnClientSuccess = (data) => {
-    console.log(data);
     localStorage.setItem("id", data.userId);
     localStorage.setItem("role", data.role);
     document.location.replace("/");
   };
+
   const authorisationUserSuccess = (data) => {
     if ("error" in data) {
       setErrors(data.error);

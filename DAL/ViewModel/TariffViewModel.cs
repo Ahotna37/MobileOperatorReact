@@ -13,30 +13,30 @@ namespace DAL.ViewModel
         [Required]
         [StringLength(50)]
         [Display(Name = "Название тарифа")]
-        public string Name { get; set; }
+        public string name { get; set; }
         [Display(Name = "Стоимость одной минуты в домашнем регионе")]
-        public decimal CostOneMinCallCity { get; set; }
+        public decimal costOneMinCallCity { get; set; }
         [Display(Name = "Стоимость одной минуты вне домашнего региона")]
-        public decimal CostOneMinCallOutCity { get; set; }
+        public decimal costOneMinCallOutCity { get; set; }
         [Display(Name = "Стоимость одной минуты в другой стране")]
-        public decimal CostOneMinCallInternation { get; set; }
+        public decimal costOneMinCallInternation { get; set; }
         [Display(Name = "ГБ интернета")]
-        public float IntGb { get; set; }
+        public float intGb { get; set; }
         [Display(Name = "Количество смс")]
-        public int Sms { get; set; }
+        public int sms { get; set; }
         [Display(Name = "Кто может подключить данный тариф")]
-        public bool IsPhysTar { get; set; }
+        public bool isPhysTar { get; set; }
         [Display(Name = "Стоимость смены тарифа")]
-        public decimal CostChangeTar { get; set; }
+        public decimal costChangeTar { get; set; }
         [Display(Name = "Можно ли подключить данный тариф")]
-        public bool CanConnectThisTar { get; set; }
+        public bool canConnectThisTar { get; set; }
         [Display(Name = "Цена в месяц")]
-        public int SubcriptionFee { get; set; }
+        public int subcriptionFee { get; set; }
         [Display(Name = "Бесплатных минут в месяц")]
-        public int FreeMinuteForMonth { get; set; }
-        public int Id { get; set; }
+        public int freeMinuteForMonth { get; set; }
+        public int id { get; set; }
         [Display(Name = "Стоимость смс")]
-        public decimal CostSms { get; set; }
+        public decimal costSms { get; set; }
         [Display(Name = "id клиента подключаемого тариф")]
         public string idClient { get; set; }
 
