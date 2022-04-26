@@ -13,11 +13,22 @@ import Typography from "@material-ui/core/Typography";
 import ClientInfForAddBalanceForm from "./ClientInfForAddBalanceForm";
 import Review from "./Review";
 import { AddBalance } from "../API/methods";
+// import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+// import TaskAltRoundedIcon from '@mui/icons-material/TaskAltRounded';
 
 /**
  *стили страницы
  */
 const useStyles = makeStyles((theme) => ({
+  palette: {
+    primary: {
+      main: '#fff'
+    },
+    secondary: {
+      main: '#fff'
+    }
+  },
   appBar: {
     position: "relative",
   },
@@ -43,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
   },
   stepper: {
     padding: theme.spacing(3, 0, 5),
+    '& .MuiStepIcon-root.MuiStepIcon-active': {
+      color: 'red',
+    },
+    '& .MuiStepIcon-root.MuiStepIcon-completed': {
+      color: 'red',
+    }
   },
   buttons: {
     display: "flex",
@@ -52,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  svg: {
+    color: "black",
+  }
 }));
 
 const steps = ["Пополнение баланса", "Информация об оплате"];
@@ -113,12 +133,17 @@ export default function Checkout({ setTitle }) {
   useEffect(() => {
     setTitle("Пополнить баланс");
   });
+  // <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiStepIcon-root Mui-active css-4ff9q7" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+  //   <circle cx="12" cy="12" r="12"></circle>
+  //   <text class="MuiStepIcon-text css-10psl7k" x="12" y="16" text-anchor="middle">1</text>
+  //   </svg>
   /**
    * разметка страницы
    */
   return (
     <React.Fragment>
       <CssBaseline />
+      <LockOutlinedIcon />
       <AppBar
         position="absolute"
         color="default"
@@ -131,7 +156,7 @@ export default function Checkout({ setTitle }) {
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
-              <Step key={label}>
+              <Step className={classes.svg} key={label}>
                 <StepLabel>{label}</StepLabel>
               </Step>
             ))}
@@ -158,7 +183,7 @@ export default function Checkout({ setTitle }) {
                   )}
                   <Button
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     onClick={
                       activeStep === steps.length - 1
                         ? CreateNewAddBalance

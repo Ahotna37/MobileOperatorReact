@@ -35,10 +35,10 @@ namespace DAL.Models
         public decimal Balance { get; set; }
         [Column("isPhysCl")]
         public bool IsPhysCl { get; set; }
-        [Required]
+/*        [Required]
         [Column("password")]
         [StringLength(10)]
-        public string Password { get; set; }
+        public string Password { get; set; }*/
         [Column("freeMin")]
         public int FreeMin { get; set; }
         [Column("freeSms")]

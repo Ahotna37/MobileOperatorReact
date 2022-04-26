@@ -85,7 +85,7 @@ export default function Album({ setTitle }) {
                 <Button
                   onClick={() => onClickAddNewSer(ser)}
                   size="small"
-                  color="primary"
+                  color="secondary"
                 >
                   Подключить
                 </Button>

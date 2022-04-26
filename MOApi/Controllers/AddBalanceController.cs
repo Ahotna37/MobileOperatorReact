@@ -61,7 +61,7 @@ namespace MOApi.Controllers
             _context.AddBalances.Add(addBalance);
 
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok();
         }
         /// <summary>
         /// апдейт запрос для изменнения пополнения средств

@@ -6,6 +6,7 @@ using DAL.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace MOApi.Controllers
 {
@@ -60,7 +61,7 @@ namespace MOApi.Controllers
                         NormalizedEmail = "ads",
                         NormalizedUserName = model.LoginPhoneNumber,
                         NumberPassport = model.PassportClient,
-                        Password = model.Password,
+                        /*Password = model.Password,*/
                         PhoneNumberConfirmed = true,
                         SurName = model.SurNameClient
 
@@ -86,7 +87,7 @@ namespace MOApi.Controllers
                         IsPhysCl = false,
                         NormalizedEmail = "ads",
                         NormalizedUserName = model.LoginPhoneNumber,
-                        Password = model.Password,
+                        /*Password = model.Password,*/
                         PhoneNumberConfirmed = true,
                         Itn = model.itn,
                         LegalAdress = model.legalAddress,
@@ -142,7 +143,7 @@ namespace MOApi.Controllers
                         error = ModelState.Values.SelectMany(e =>
                         e.Errors.Select(er => er.ErrorMessage))
                     };
-                    return Ok(errorMsg);
+                    return NotFound(errorMsg);
                 }
             }
             else
@@ -154,7 +155,7 @@ namespace MOApi.Controllers
                     e.Errors.Select(er => er.ErrorMessage))
                 };
 
-                return Ok(errorMsg);
+                return NotFound(errorMsg);
             }
         }
         /// <summary>
@@ -176,6 +177,12 @@ namespace MOApi.Controllers
                         message = "Выполнен вход пользователем: " + model.LoginPhoneNumber,
                         id = clientByLogin.Id,
                     };
+                    var connectedTar = _context.ConnectTariffs.Where(i => i.IdClient == clientByLogin.Id).Where(i => i.DateConnectTariffEnd == null).FirstOrDefault();
+                    var tariff = _context.TariffPlans.Where(i => i.Id == connectedTar.IdTariffPlan).FirstOrDefault();
+                    if (connectedTar.DateConnectTariffBegin.Day == DateTime.Now.Day)
+                    {
+                        clientByLogin.Balance -= tariff.SubcriptionFee;
+                    }
                     return Ok(msg);
                 }
                 else
@@ -237,5 +244,6 @@ namespace MOApi.Controllers
         }
         private Task<Client> GetCurrentUserAsync() =>
         _clientManager.GetUserAsync(HttpContext.User);
+
     }
 }

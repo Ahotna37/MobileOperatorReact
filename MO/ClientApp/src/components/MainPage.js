@@ -231,7 +231,7 @@ export default function MainPageReturn({ setTitle }) {
                   <Button
                     fullWidth
                     variant={tier.buttonVariant}
-                    color="primary"
+                    color="secondary"
                     onClick={() => onClickAddNewSer(tier)}
                   >
                     {tier.buttonText}

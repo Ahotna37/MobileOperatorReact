@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System;
 using Microsoft.Extensions.Logging;
-
+using MOApi.Controllers;
 
 namespace MOApi
 {
@@ -126,7 +126,7 @@ namespace MOApi
 
             //создание роли
             //CreateUserRoles(services).Wait();
-
+            /*CreateNewTenUsers(services, 89109817277).Wait();*/
 
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
@@ -152,7 +152,7 @@ namespace MOApi
                 {
                     PhoneNumber = adminLoginPhoneNumber,
                     // Email = LoginPhoneNumber,
-                    Password = adminPassword,
+                    /*Password = adminPassword,*/
                     UserName = adminLoginPhoneNumber
                 };
                 IdentityResult result = await
@@ -173,13 +173,52 @@ namespace MOApi
 
                     PhoneNumber = userLoginPhoneNumber,
                     UserName = userLoginPhoneNumber,
-                    Password = userPassword
+                    /*Password = userPassword*/
                 };
                 IdentityResult result = await userManager.CreateAsync(user, userPassword);
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, "user");
                 }
+            }
+        }
+        private async Task CreateNewTenUsers(IServiceProvider serviceProvider, long startUserLogin)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<Client>>();
+            // Создание Администратора
+            string adminLoginPhoneNumber = "admin";
+            string adminPassword = "Aa123456!";
+            //string userEmail = "user@mail.com";
+            for (long i = startUserLogin; i <= startUserLogin + 1; i++)
+            {
+                string userLoginPhoneNumber = i.ToString();
+                string userPassword = "Aa123456!";
+                Random random = new Random();
+                if (await userManager.FindByNameAsync(userLoginPhoneNumber) == null)
+                {
+                    Client user = new Client
+                    {
+
+                        PhoneNumber = userLoginPhoneNumber,
+                        UserName = userLoginPhoneNumber
+                        , DateConnect = DateTime.Now,
+                        DateOfBirth = DateTime.Now,
+                        Balance = random.Next(0, 1000), 
+                         FreeGb = random.Next(0, 10), FreeMin = random.Next(0, 100)
+                         , FreeSms = random.Next(0, 100),
+                        IsPhysCl = true,
+                        Name = "Name",
+                        SurName="Surname"
+                        /*Password = userPassword*/
+                    };
+                    IdentityResult result = await userManager.CreateAsync(user, userPassword);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, "user");
+                    }
+                }
+                
             }
         }
     }

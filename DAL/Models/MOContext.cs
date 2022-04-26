@@ -71,7 +71,7 @@ namespace DAL.Models
 
                 entity.Property(e => e.NumberPassport).IsFixedLength(true);
 
-                entity.Property(e => e.Password).IsFixedLength(true);
+                /*entity.Property(e => e.Password).IsFixedLength(true);*/
 
                 entity.Property(e => e.PhoneNumber).IsUnicode(false);
 

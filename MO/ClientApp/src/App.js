@@ -9,6 +9,8 @@ import AddBalance from "./components/AddBalance";
 import Tariff from "./components/Tariff";
 import ClientList from "./components/ClientList";
 import Service from "./components/Service";
+import Stats from "./components/Stats";
+import AdminTariff from "./components/AdminTariff";
 import { useLocation } from "react-router-dom";
 
 /**
@@ -78,6 +80,24 @@ export default function App() {
             <Service title={title} setTitle={setTitle} {...props}>
               {" "}
             </Service>
+          )}
+          exact
+        />
+        <Route
+          path="/Stats"
+          render={(props) => (
+            <Stats title={title} setTitle={setTitle} {...props}>
+              {" "}
+            </Stats>
+          )}
+          exact
+        />
+        <Route
+          path="/AdminTariff"
+          render={(props) => (
+            <AdminTariff title={title} setTitle={setTitle} {...props}>
+              {" "}
+            </AdminTariff>
           )}
           exact
         />

@@ -111,6 +111,30 @@ namespace MOApi.Controllers
             return NoContent();
         }
 
+        public async Task<IActionResult> ConnectTarForClientCreatedInStartup(string loginClient)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var oldConn = _context.ConnectTariffs.Where(i => i.IdClient == tarVM.idClient && i.DateConnectTariffEnd == null).FirstOrDefault();
+            //oldConn.DateConnectTariffEnd = DateTime.Now;
+            var newTar = await _context.TariffPlans.Where(i => i.Id == 1).FirstOrDefaultAsync();//физ лицо
+            //var newTar = await _context.TariffPlans.Where(i => i.Id == 1).FirstOrDefaultAsync();//юр лицо
+            var client = await _context.Clients.Where(i => i.PhoneNumber == loginClient).FirstOrDefaultAsync();
+            //oldTarConnect.DateConnectTariffEnd = DateTime.Now;
+            _context.ConnectTariffs.Add(new ConnectTariff()
+            {
+                IdClient = client.Id,
+                DateConnectTariffBegin = DateTime.Now,
+                DateConnectTariffEnd = null,
+                IdTariffPlan = newTar.Id
+            });
+            //_context.TariffPlans.Add(tarVM);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
         /// <summary>
         /// изменение тарифа
         /// </summary>
@@ -160,6 +184,41 @@ namespace MOApi.Controllers
             _context.TariffPlans.Remove(item);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+        [HttpGet("tariffstats")]
+        public async Task<IActionResult> TariffStats()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var tariffs = await _context.TariffPlans.ToListAsync();
+            var connects = await _context.ConnectTariffs.ToListAsync();
+            List<Stats> stats = new List<Stats>();
+            foreach (var tar in tariffs)
+            {
+                var item = _context.ConnectTariffs.Where(i => i.IdTariffPlan == tar.Id).Count();
+                /*var item = _context.ConnectTariffs.Where(i=>i.DateConnectTariffEnd==null).GroupBy(i => i.IdTariffPlan == tar.Id).Count();*/
+                stats.Add(new Stats() { name = tar.Name, value = item });
+            }
+            return Ok(stats);
+        }
+        [HttpGet("tariffstatsnow")]
+        public async Task<IActionResult> TariffStatsNow()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var tariffs = await _context.TariffPlans.ToListAsync();
+            var connects = await _context.ConnectTariffs.ToListAsync();
+            List<Stats> stats = new List<Stats>();
+            foreach (var tar in tariffs)
+            {
+                var item = _context.ConnectTariffs.Where(i => i.DateConnectTariffEnd == null).Where(i => i.IdTariffPlan == tar.Id).Count();
+                stats.Add(new Stats() { name = tar.Name, value = item });
+            }
+            return Ok(stats);
         }
         public IActionResult Index()
         {

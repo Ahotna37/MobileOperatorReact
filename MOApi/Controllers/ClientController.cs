@@ -42,12 +42,28 @@ namespace MOApi.Controllers
         [Route("phys")]
         public async Task<IActionResult> GetAllPhys()
         {
-            var clients = await repositoryClient.GetPhysicalClients();
+            try
+            {
+                var client = await _context.Clients.Where(i => i.IsPhysCl == true).Where(i => i.LockoutEnabled == true).ToListAsync(); // LockoutEnabled - флаг что клиент удален, true если не удален, false если удален
+                if (client == null)
+                {
+                    return null;
+                }
+                return Ok(client);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                //throw;
+                return NotFound(e.Message);
+            }
+
+/*            var clients = await repositoryClient.GetPhysicalClients();
             if (clients == null)
             {
                 return NotFound();
             }
-            return Ok(clients);
+            return Ok(clients);*/
         }
         /// <summary>
         /// гет запрос для получения всехюридических лиц
@@ -56,12 +72,27 @@ namespace MOApi.Controllers
         [Route("legal")]
         public async Task<IActionResult> GetAllLegal()
         {
-            var clients = await repositoryClient.GetLegalClients();
+            try
+            {
+                var client = await _context.Clients.Where(i => i.IsPhysCl == false).Where(i => i.LockoutEnabled == true).ToListAsync();
+                if (client == null)
+                {
+                    return null;
+                }
+                return Ok(client);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                //throw;
+                return NotFound(e.Message);
+            }
+/*            var clients = await repositoryClient.GetLegalClients();
             if (clients == null)
             {
                 return NotFound();
             }
-            return Ok(clients);
+            return Ok(clients);*/
         }
         /// <summary>
         /// получения клиента по айди
@@ -119,7 +150,7 @@ namespace MOApi.Controllers
             item.FreeMin = client.FreeMin;
             item.FreeSms = client.FreeSms;
             item.IsPhysCl = client.IsPhysCl;
-            item.Password = client.Password;
+            /*item.Password = client.Password;*/
             item.PhoneNumber = client.PhoneNumber;
             _context.Clients.Update(item);
             await _context.SaveChangesAsync();
@@ -131,7 +162,11 @@ namespace MOApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient([FromRoute] string id)
         {
-            var deletedClient = await repositoryClient.DeleteClientById(id);
+            var connect = _context.ConnectTariffs.Where(i => i.IdClient == id).Where(i =>i.DateConnectTariffEnd == null).FirstOrDefault();
+            connect.DateConnectTariffEnd = DateTime.Now;
+            
+            var deletedClient = _context.Clients.Where(i => i.Id == id).FirstOrDefault();
+            deletedClient.LockoutEnabled = false; // флаг что клиент удален
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -140,6 +175,7 @@ namespace MOApi.Controllers
             {
                 return NotFound();
             }
+            await _context.SaveChangesAsync();
             return NoContent();
         }
         public IActionResult Index()

@@ -165,6 +165,26 @@ namespace MOApi.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpGet("servicestats")]
+        public async Task<IActionResult> ServiceStats()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var services = await _context.ExtraServices.ToListAsync();
+            var connects = await _context.ConnectServices.ToListAsync();
+            List<Stats> stats = new List<Stats>();
+            foreach (var ser in services)
+            {
+                var item = _context.ConnectServices.Where(i => i.IdExtraService == ser.Id).Count();
+                /*var item = _context.ConnectTariffs.Where(i=>i.DateConnectTariffEnd==null).GroupBy(i => i.IdTariffPlan == tar.Id).Count();*/
+                stats.Add(new Stats() { name = ser.Name, value = item });
+            }
+            return Ok(stats);
+        }
+
         public IActionResult Index()
         {
             return View();

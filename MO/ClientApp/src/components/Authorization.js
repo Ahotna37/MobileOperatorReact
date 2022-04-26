@@ -252,7 +252,7 @@ export default function SignIn() {
             type="button"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
             onClick={onClickAuthorisation}
           >
@@ -262,7 +262,7 @@ export default function SignIn() {
             type="button"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             onClick={handleOpen}
             className={classes.registr}
           >
@@ -471,7 +471,7 @@ export default function SignIn() {
                     //type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     className={classes.submit}
                     onClick={onClickCreate}
                   >

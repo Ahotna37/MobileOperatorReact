@@ -64,9 +64,16 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  dataGrid: {
+    '.MuiCheckbox-colorPrimary.Mui-checked':{
+      color: 'red'
+    },
+  },
+
 }));
 
 export default function ClientList({ setTitle }) {
+  const classes = useStyles();
   /**
    * феч запросы для получения данных для колонок
    */
@@ -103,7 +110,7 @@ export default function ClientList({ setTitle }) {
   return (
     <>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
+        <DataGrid className={classes.dataGrid}
           rows={clientsPhys}
           columns={columnsForPhys}
           pageSize={5}
@@ -115,7 +122,7 @@ export default function ClientList({ setTitle }) {
         Удалить
       </Button>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
+        <DataGrid 
           rows={clientsLegal}
           columns={columnsForLegal}
           pageSize={5}

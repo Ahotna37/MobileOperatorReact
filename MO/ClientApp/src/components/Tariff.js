@@ -103,7 +103,7 @@ export default function Album({ setTitle }) {
                 <Button
                   onClick={() => onClickAddNewTar(tarif)}
                   size="small"
-                  color="primary"
+                  color="secondary"
                 >
                   Подключить
                 </Button>

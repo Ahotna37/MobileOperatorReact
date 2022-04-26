@@ -54,7 +54,16 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
       listStyle: "none",
     },
+    palette: {
+      secondary: {
+        main: '#333333'
+      }
+    }
   },
+  // palette: {
+  //   primary: '#ffffff',
+  //   secondary: '#000000',
+  // },
   list: {
     width: 250,
   },
@@ -71,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   conteinerContent: {
+    height:"inherit",
     padding: theme.spacing(5, 1),
   },
   link: {
@@ -103,6 +113,9 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     flexGrow: 1,
+  },
+  toolbar: {
+    background: "#f50057",
   },
   linkForMe: {
     color: "inherit !important",
@@ -211,7 +224,7 @@ export default function GeneralPage({ children, noHeader = false, title }) {
       {noHeader ? null : (
         <div className={classes.root}>
           <AppBar position="static">
-            <Toolbar>
+            <Toolbar className={classes.toolbar}>
               <IconButton
                 className="navIcon"
                 color="inherit"
@@ -231,74 +244,113 @@ export default function GeneralPage({ children, noHeader = false, title }) {
                 {title}
               </Typography>
               <div className="navigation">
-                <Link
-                  component={RouterLink}
-                  className={classes.linkForMe}
-                  to="/"
-                >
-                  {" "}
-                  <Button className={classes.navItem} color="inherit">
-                    Главная
-                  </Button>
-                </Link>
-                <Link
-                  className={classes.linkForMe}
-                  component={RouterLink}
-                  to="/CallsAndSmsPage"
-                >
-                  <Button className={classes.navItem} color="inherit">
-                    История
-                  </Button>
-                </Link>
-                <Link
-                  className={classes.linkForMe}
-                  component={RouterLink}
-                  to="/AddBalance"
-                >
-                  <Button className={classes.navItem} color="inherit">
-                    Пополнить баланс
-                  </Button>
-                </Link>
-                <Link
-                  className={classes.linkForMe}
-                  component={RouterLink}
-                  to="/Tariff"
-                >
-                  <Button className={classes.navItem} color="inherit">
-                    Тарифы
-                  </Button>
-                </Link>
-                <Link
-                  className={classes.linkForMe}
-                  component={RouterLink}
-                  to="/Service"
-                >
-                  <Button className={classes.navItem} color="inherit">
-                    Услуги
-                  </Button>
-                </Link>
-                {localStorage.getItem("role") === "admin" ? (
-                  <Link
-                    className={classes.linkForMe}
-                    component={RouterLink}
-                    to="/ClientList"
-                  >
-                    <Button className={classes.navItem} color="inherit">
-                      Список клиентов
-                    </Button>
-                  </Link>
+                {localStorage.getItem("role") !== "admin" ? (
+                  <div>
+                    <Link
+                      component={RouterLink}
+                      className={classes.linkForMe}
+                      to="/"
+                    >
+                      {" "}
+                      <Button className={classes.navItem} color="inherit">
+                        Главная
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/CallsAndSmsPage"
+                    >
+                      <Button className={classes.navItem} color="inherit">
+                        История
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/AddBalance"
+                    >
+                      <Button className={classes.navItem} color="inherit">
+                        Пополнить баланс
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/Tariff"
+                    >
+                      <Button className={classes.navItem} color="inherit">
+                        Тарифы
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/Service"
+                    >
+                      <Button className={classes.navItem} color="inherit">
+                        Услуги
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/Authorization"
+                    //onClick = {logOut}
+                    >
+                      {" "}
+                      <Button className={classes.navItem} color="inherit">
+                        Выход
+                      </Button>
+                    </Link>
+                  </div>
                 ) : null}
-                <Link
-                  className={classes.linkForMe}
-                  component={RouterLink}
-                  to="/Authorization"
-                  //onClick = {logOut}
-                >
-                  {" "}
-                  <Button className={classes.navItem} color="inherit">
-                    Выход
-                  </Button>
-                </Link>
+                {localStorage.getItem("role") === "admin" ? (
+                  <>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/ClientList"
+                    >
+                      <Button className={classes.navItem} color="inherit">
+                        Список клиентов
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/Stats"
+                    //onClick = {logOut}
+                    >
+                      {" "}
+                      <Button className={classes.navItem} color="inherit">
+                        Статистика
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/AdminTariff"
+                    //onClick = {logOut}
+                    >
+                      {" "}
+                      <Button className={classes.navItem} color="inherit">
+                        Добавить тариф
+                      </Button>
+                    </Link>
+                    <Link
+                      className={classes.linkForMe}
+                      component={RouterLink}
+                      to="/Authorization"
+                    //onClick = {logOut}
+                    >
+                      {" "}
+                      <Button className={classes.navItem} color="inherit">
+                        Выход
+                      </Button>
+                    </Link>
+                  </>
+                ) : null}
               </div>
             </Toolbar>
           </AppBar>
@@ -311,13 +363,13 @@ export default function GeneralPage({ children, noHeader = false, title }) {
       {/**
        * футер
        */}
-      {noHeader ? null : (
+      {/* {noHeader ? null : (
         <Container maxWidth="md" className={classes.footer}>
           <Box mt={5}>
             <Copyright />
           </Box>
         </Container>
-      )}
+      )} */}
     </React.Fragment>
   );
 }
