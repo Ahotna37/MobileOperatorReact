@@ -85,7 +85,7 @@ export default function Checkout({ setTitle }) {
    * хранилище данных для пополнения баланса
    */
   const [inputValuesForAddBalance, setInputValuesForAddBalance] = useState({
-    PhoneNumberForAddBalance: "",
+    PhoneNumberForAddBalance: localStorage.getItem("role"),
     SumForAdd: "",
     NumberBankCard: "",
     NameBankCard: "",
@@ -93,6 +93,9 @@ export default function Checkout({ setTitle }) {
     CvvbankCard: "",
     IdClient: localStorage.getItem("id"),
   });
+  // const getClient = () => {
+  //   Client.getById(getByIdSuccess, localStorage.getItem("id"));
+  // };
   /**
    * феч запрос на создание пополнения баланса
    */
@@ -143,7 +146,6 @@ export default function Checkout({ setTitle }) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <LockOutlinedIcon />
       <AppBar
         position="absolute"
         color="default"

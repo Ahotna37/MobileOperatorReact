@@ -1,6 +1,8 @@
 /**
  * Файл для феч запросов
  */
+ import { ToastContainer, toast } from 'react-toastify';
+ import 'react-toastify/dist/ReactToastify.css';
 /**
  * Команды КРАД
  */
@@ -26,6 +28,25 @@ const CLASS = {
   AddBalance: "AddBalance",
   Service: "Service",
 };
+
+const error = () => toast.error(' Недостаточно средств, попоните счет', {
+  position: "top-right",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+});
+const success = () => toast.success('Успех!', {
+  position: "top-right",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+});
 
 const convertJSONToUrlEncoded = (obj) => {
   let str = [];
@@ -91,7 +112,7 @@ function request(methodClass, requestType, method, data, options, success) {
           }
         })
         .then((res) => success(res))
-        .catch(() => window.location.replace("/authorization"));
+        .catch(() => window.location.replace("/"));
       break;
     case T.PUT:
       fetch(response, {
@@ -106,7 +127,7 @@ function request(methodClass, requestType, method, data, options, success) {
         credentials: "include",
         body: JSON.stringify(data),
       }).then((res) => success(res))
-      .catch(() => window.location.replace("/authorization"));
+      // .catch(() => window.location.replace("/authorization"));
       break;
     case T.DELETE:
       fetch(response, {
@@ -121,7 +142,7 @@ function request(methodClass, requestType, method, data, options, success) {
         credentials: "include",
         body: JSON.stringify(data),
       }).then((res) => success(res))
-      .catch(() => window.location.replace("/authorization"));
+      // .catch(() => window.location.replace("/authorization"));
       break;
     default:
       console.log("Такого запроса не существует!");
@@ -182,6 +203,9 @@ export const Tariff = {
   AddNewTarForClient: (success, body) => {
     console.log(body);
     request(CLASS.Tariff, T.PUT, localStorage.idClient, body, {}, success);
+  },
+  createTariff: (success, body) => {
+    request(CLASS.Tariff, T.POST, "", body, {}, success);
   },
   GetTariffForPhysOrLegal: (success, id) => {
     request(CLASS.UserTariff, T.GET, id, {}, {}, success);

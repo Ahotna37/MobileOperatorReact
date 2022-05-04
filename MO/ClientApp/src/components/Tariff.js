@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import { Tariff } from "../API/methods";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * страница тарифов
@@ -54,34 +56,93 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Album({ setTitle }) {
+  const error = () => toast.error(' Недостаточно средств, попоните счет', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+  const success = () => toast.success('Успех!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
   const classes = useStyles();
   /**
    * феч возвращающий тарифы для клиента
    */
+  const setTariffClient = () => {
+    const url = `https://localhost:5001/api/Tariff/listtar/${localStorage.getItem("id")}`;
+    fetch(url, {
+      method: "GET",
+      // body: JSON.stringify(info),
+      headers: { "Content-Type": "application/json", 'Accept': 'application/json, application/xml, text/plain, text/html, .' },
+    })
+      .then((res) => res.json())
+      .then((data) => setTariff(data))
+  }
   const [tariff, setTariff] = React.useState([]);
+  const [connectedTar, setConnectedTar] = React.useState([]);
   useEffect(() => {
     setTitle("Тарифы");
-    Tariff.GetAllTariff(
-      (data) => setTariff(data),
-      // localStorage.getItem("idTariff"),
-      {}
-    );
+    setTariffClient();
+    const urlClient = `https://localhost:5001/api/Tariff/user/${localStorage.getItem("id")}`;
+    fetch(urlClient, {
+      method: "GET",
+      // body: JSON.stringify(info),
+      headers: { "Content-Type": "application/json", 'Accept': 'application/json, application/xml, text/plain, text/html, .' },
+    })
+      .then((res) => res.json())
+      .then((data) => setConnectedTar(data))
+
   }, []);
   /**
    * феч для добавления тарифа
    */
-  const onClickAddNewTar = (tarif) => {
-    console.log(tarif);
-    Tariff.AddNewTarForClient({
-      // IdTariffPlan: tarif.IdTariffPlan,
-      tarif
-    });
-  };
+   const onClickAddNewTar = (tarif) => {
+    fetch(`https://localhost:5001/api/Tariff/connecttar/${localStorage.getItem("id")}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "access-control-expose-headers": "*",
+        "Access-Control-Allow-Credentials": "true",
+      },
+      credentials: "include",
+      body: tarif.id
+      // body: {tarId: tarif.id},
+    })
+    .then((res) => {
+      if (res.status !== 204) {
+        return res.json();
+      } else {
+        return res
+      }
+    })
+      .then(() => success())
+      .then (() => setTariffClient())
+      .catch(() => error());
+  }
+  // const onClickAddNewTar = (tarif) => {
+  //   console.log(tarif);
+  //   Tariff.AddNewTarForClient({
+  //     // IdTariffPlan: tarif.IdTariffPlan,
+  //     tarif
+  //   });
+  // };
   /**
    * разметка страницы
    */
   return (
     <React.Fragment>
+      <ToastContainer/>
       <Grid container spacing={4}>
         {tariff.map((tarif) => (
           <Grid item key={tarif} xs={12} sm={6} md={4}>
@@ -98,12 +159,20 @@ export default function Album({ setTitle }) {
                 </Typography>
                 <Typography>Бесплатные СММ {tarif.sms}</Typography>
                 <Typography>Интернет {tarif.intGb}</Typography>
+                <Typography>Стоимость минуты в городе {tarif.costOneMinCallCity}</Typography>
+                <Typography>Стоимость минуты вне города {tarif.costOneMinCallInternation}</Typography>
+                <Typography>Стоимость минуты в другую страну {tarif.costOneMinCallOutCity}</Typography>
+                <Typography>Стоимость смс {tarif.costSms}</Typography>
+                <Typography>Стоимость смены тарифа {tarif.costChangeTar}</Typography>
+                <Typography>Стоимость в месяц {tarif.subcriptionFee}</Typography>
               </CardContent>
               <CardActions>
+
                 <Button
                   onClick={() => onClickAddNewTar(tarif)}
                   size="small"
                   color="secondary"
+                  disabled={tarif.name === connectedTar.name}
                 >
                   Подключить
                 </Button>

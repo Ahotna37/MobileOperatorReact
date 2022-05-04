@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import { Service } from "../API/methods";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 /**
  * страница услуг
  */
@@ -50,6 +52,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function Album({ setTitle }) {
+  const error = () => toast.error(' Недостаточно средств, попоните счет', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+  const success = () => toast.success('Успех!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
   const classes = useStyles();
   /**
    * феч возвращающий услуги
@@ -59,17 +79,43 @@ export default function Album({ setTitle }) {
     setTitle("Услуги");
     Service.GetAllService((data) => setService(data), {});
   }, []);
+  // const onClickAddNewSer = (ser) => {
+  //   Service.AddNewSerForClient((data) => console.log(data), {
+  //     idClient: localStorage.getItem("id"),
+  //     Name: ser.name,
+  //   });
+  // };
   const onClickAddNewSer = (ser) => {
-    Service.AddNewSerForClient((data) => console.log(data), {
-      idClient: localStorage.getItem("id"),
-      Name: ser.name,
-    });
-  };
+    fetch("https://localhost:5001/api/service/connectnewser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "access-control-expose-headers": "*",
+        "Access-Control-Allow-Credentials": "true",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        idClient: localStorage.getItem("id"),
+        Name: ser.name,
+      }),
+    })
+    .then((res) => {
+      if (res.status !== 204) {
+        return res.json();
+      } else {
+        return res
+      }
+    })
+      .then(() => success())
+      .catch(() => error());
+  }
   /**
    * разметка страницы
    */
   return (
     <React.Fragment>
+      <ToastContainer />
       <Grid container spacing={4}>
         {service.map((ser) => (
           <Grid item key={ser} xs={12} sm={6} md={4}>

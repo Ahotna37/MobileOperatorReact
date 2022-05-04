@@ -14,7 +14,6 @@ export default function ClientInfForAddBalanceForm({
 }) {
   const handleChangeInputForAddBalance = (event) => {
     const { value, name } = event.target;
-    console.log(inputValuesForAddBalance);
     setInputValuesForAddBalance((prev) => ({ ...prev, [name]: value }));
   };
   /**
@@ -36,7 +35,8 @@ export default function ClientInfForAddBalanceForm({
             autoComplete=""
             type="tel"
             maxLength="11"
-            value={inputValuesForAddBalance.PhoneNumberForAddBalance}
+            disabled
+            value={localStorage.getItem("role")}
             onChange={handleChangeInputForAddBalance}
           />
         </Grid>

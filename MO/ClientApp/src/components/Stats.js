@@ -18,6 +18,8 @@ import { Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 import { PieChartAllTariffs } from "./graphics/PieChartAllTariffs";
 import { PieChartTariffsNow } from "./graphics/PieChartTariffsNow";
 import { PieChartAllServices } from "./graphics/PieChartAllServices";
+import { PieChartClientsType } from "./graphics/PieChartClientsType";
+import { PieChartCallType } from "./graphics/PieChartCallType";
 
 /**
  * страница услуг
@@ -49,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
     },
     stats: {
+        gap: "100px",
+        display: "flex",
         height: "100%",
     },
     tariffMedia: {},
@@ -59,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         flexWrap:"wrap",
-        gap: 20,
+        gap: 100,
     },
     footer: {
         backgroundColor: theme.palette.background.paper,
@@ -120,6 +124,9 @@ export default function Stats({ setTitle }) {
             Name: ser.name,
         });
     };
+    useEffect(() => {
+        setTitle("Статистика");
+    },[])
     /**
      * разметка страницы
      */
@@ -129,8 +136,8 @@ export default function Stats({ setTitle }) {
                 <PieChartAllTariffs />
                 <PieChartTariffsNow />
                 <PieChartAllServices />
-                {/* <PieChartMy />
-                <PieChartMy /> */}
+                <PieChartClientsType />
+                <PieChartCallType />
             </div>
         </div>
     );

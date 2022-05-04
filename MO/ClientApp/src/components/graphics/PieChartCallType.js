@@ -2,7 +2,14 @@ import { makeStyles, Typography } from '@material-ui/core';
 import React, { PureComponent, useEffect } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#DC143C', '#FF69B4', '#4B0082', '#BC8F8F', '#7FFFD4'];
+const data = [
+    { name: 'Group A', value: 400 },
+    { name: 'Group B', value: 300 },
+    { name: 'Group C', value: 300 },
+    { name: 'Group D', value: 200 },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042','#DC143C','#FF69B4','#4B0082','#BC8F8F','#7FFFD4'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -16,8 +23,6 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
         </text>
     );
 };
-
-
 const useStyles = makeStyles((theme) => ({
     icon: {
         marginRight: theme.spacing(2),
@@ -26,17 +31,18 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         textAlign: "center",
         marginBottom: "20px",
-        fontSize: "20px",
-        fontWeight: "bold"
+        fontSize:"20px",
+        fontWeight:"bold"
     }
 }));
 
-export const PieChartAllTariffs = () => {
+
+export const PieChartCallType = () => {
     const classes = useStyles();
     const [stats, setStats] = React.useState([]);
     useEffect(() => {
         fetch(
-            "https://localhost:5001/api/Tariff/tariffstats",
+            "https://localhost:5001/api/Call/calltype",
             {
                 method: "GET",
                 headers: {
@@ -61,19 +67,17 @@ export const PieChartAllTariffs = () => {
                         labelLine={false}
                         label={renderCustomizedLabel}
                         outerRadius={250}
-                        // fill="#8884d8"
+                        fill="#8884d8"
                         dataKey="value"
                     >
                         {stats.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>
                     <Tooltip />
-
                 </PieChart>
-
             </ResponsiveContainer>
-            <Typography className={classes.typograghy}>Статистика по всем подключениям тарифов</Typography>
+            <Typography className={classes.typograghy}>Статистика по звонкам</Typography>
         </div>
     );
 }

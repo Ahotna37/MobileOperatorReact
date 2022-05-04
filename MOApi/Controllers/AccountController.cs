@@ -111,6 +111,7 @@ namespace MOApi.Controllers
                         id = client.Id
                     };
                     if (client.IsPhysCl)
+                    {
                         conTar = new ConnectTariff
                         {
                             DateConnectTariffBegin = DateTime.Now,
@@ -118,7 +119,12 @@ namespace MOApi.Controllers
                             IdClient = client.Id,
                             IdTariffPlan = 2
                         };
+                        client.FreeMin = 100;
+                        client.FreeGb = 2;
+                        client.FreeSms = 50;
+                    }
                     else
+                    {
                         conTar = new ConnectTariff
                         {
                             DateConnectTariffBegin = DateTime.Now,
@@ -126,6 +132,10 @@ namespace MOApi.Controllers
                             IdClient = client.Id,
                             IdTariffPlan = 3
                         };
+                        client.FreeMin = 300;
+                        client.FreeGb = 10;
+                        client.FreeSms = 100;
+                    }
                     _context.ConnectTariffs.Add(conTar);
                     await _context.SaveChangesAsync();
                     return Ok(msg);

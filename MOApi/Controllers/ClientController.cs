@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using DAL.Interfaces;
 using DAL.Repository;
+using DAL.ViewModel;
 
 namespace MOApi.Controllers
 {
@@ -177,6 +178,23 @@ namespace MOApi.Controllers
             }
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+        [HttpGet("clienttype")]
+        public async Task<IActionResult> ClientType()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var clients = await _context.Clients.ToListAsync();
+            
+            List<Stats> stats = new List<Stats>();
+
+            var phis = _context.Clients.Where(i => i.IsPhysCl == true).Count();
+            var legal = _context.Clients.Where(i => i.IsPhysCl == false).Count();
+            stats.Add(new Stats() { name = "Физическое лицо", value = phis });
+            stats.Add(new Stats() { name = "Юридическое лицо", value = legal });
+            return Ok(stats);
         }
         public IActionResult Index()
         {

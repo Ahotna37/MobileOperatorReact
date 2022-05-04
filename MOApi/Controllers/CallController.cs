@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using DAL.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -110,6 +111,25 @@ namespace MOApi.Controllers
             _context.Calls.Remove(item);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+        [HttpGet("calltype")]
+        public async Task<IActionResult> CallType()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var calls = await _context.Clients.ToListAsync();
+
+            List<Stats> stats = new List<Stats>();
+
+            var local = _context.Calls.Where(i => i.CallType == 1).Count();
+            var outCity = _context.Calls.Where(i => i.CallType == 2).Count();
+            var internation = _context.Calls.Where(i => i.CallType == 3).Count();
+            stats.Add(new Stats() { name = "По городу", value = local });
+            stats.Add(new Stats() { name = "Межгород", value = outCity });
+            stats.Add(new Stats() { name = "В другую страну", value = internation });
+            return Ok(stats);
         }
         public IActionResult Index()
         {

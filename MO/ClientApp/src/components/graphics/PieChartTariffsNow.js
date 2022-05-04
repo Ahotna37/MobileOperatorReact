@@ -9,7 +9,7 @@ const data = [
     { name: 'Group D', value: 200 },
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042','#DC143C','#FF69B4','#4B0082','#BC8F8F','#7FFFD4'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -57,8 +57,8 @@ export const PieChartTariffsNow = () => {
             .then((res) => setStats(res))
     }, []);
     return (
-        <>
-            <ResponsiveContainer width={600} height={600}>
+        <div className={classes.conteiner}>
+            <ResponsiveContainer width={500} height={500}>
                 <PieChart width={200} height={200}>
                     <Pie
                         data={stats}
@@ -66,11 +66,11 @@ export const PieChartTariffsNow = () => {
                         cy="50%"
                         labelLine={false}
                         label={renderCustomizedLabel}
-                        outerRadius={300}
+                        outerRadius={250}
                         fill="#8884d8"
                         dataKey="value"
                     >
-                        {data.map((entry, index) => (
+                        {stats.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>
@@ -78,6 +78,6 @@ export const PieChartTariffsNow = () => {
                 </PieChart>
             </ResponsiveContainer>
             <Typography className={classes.typograghy}>Статистика по подключенным тарифам</Typography>
-        </>
+        </div>
     );
 }

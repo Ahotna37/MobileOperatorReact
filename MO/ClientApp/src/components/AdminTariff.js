@@ -13,9 +13,11 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
-import { Service } from "../API/methods";
+import { Service, Tariff } from "../API/methods";
 import { Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-import { TextField } from "@material-ui/core";
+import { Checkbox, TextField } from "@material-ui/core";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * страница услуг
@@ -68,173 +70,250 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AdminTariff({ setTitle }) {
+    const error = () => toast.error(' Тариф уже создан', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+    const success = () => toast.success('Успех!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
     const classes = useStyles();
-    const [name, setName] = useState();
-    const [costOneMinCallCity, setCostOneMinCallCity] = useState();
-    const [costOneMinCallOutCity, setCostOneMinCallOutCity] = useState();
-    const [costOneMinCallInternation, setCostOneMinCallInternation] = useState();
-    const [intGB, setIntGB] = useState();
-    const [SMS, setSMS] = useState();
-    const [isPhysTar, setIsPhysTar] = useState();
-    const [costChangeTar, setCostChangeTar] = useState();
-    const [CanConnectThisTar, setCanConnectThisTar] = useState();
-    const [subcriptionFee, setSubcriptionFee] = useState();
-    const [freeMinuteForMonth, setFreeMinuteForMonth] = useState();
-    const [costSms, setCostSms] = useState();
     useEffect(() => {
+        setTitle("Добавить тариф");
+    },[])
 
-    }, []);
+    const [inputValuesForTariff, setInputValuesForTariff] = React.useState({
+        Name: "",
+        CostOneMinCallCity: 0,
+        CostOneMinCallOutCity: 0,
+        CostOneMinCallInternation: 0,
+        IntGb: 0,
+        Sms: 0,
+        IsPhysTar: true,
+        CostChangeTar: 0,
+        CanConnectThisTar: true,
+        SubcriptionFee: 0,
+        FreeMinuteForMonth: 0,
+        CostSms: 0,
+    });
+    const handleChangeInputForTariff = (event) => {
+        const { value, name } = event.target;
+        setInputValuesForTariff((prev) => ({ ...prev, [name]: value }));
+    };
+    const handleChangeCheckboxForTariff = (event) => {
+        const { checked, name } = event.target;
+        setInputValuesForTariff((prev) => ({ ...prev, [name]: checked }));
+    };
+
+    const createTariff = () => {
+        fetch("https://localhost:5001/api/tariff/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "access-control-expose-headers": "*",
+                "Access-Control-Allow-Credentials": "true",
+            },
+            // credentials: "include",
+            body: JSON.stringify({
+                Name: inputValuesForTariff.Name,
+                CostOneMinCallCity: inputValuesForTariff.CostOneMinCallCity,
+                CostOneMinCallOutCity: inputValuesForTariff.CostOneMinCallOutCity,
+                CostOneMinCallInternation: inputValuesForTariff.CostOneMinCallInternation,
+                IntGb: inputValuesForTariff.IntGb,
+                Sms: +inputValuesForTariff.Sms,
+                IsPhysTar: inputValuesForTariff.IsPhysTar,
+                CostChangeTar: inputValuesForTariff.CostChangeTar,
+                CanConnectThisTar: inputValuesForTariff.CanConnectThisTar,
+                SubcriptionFee: inputValuesForTariff.SubcriptionFee,
+                FreeMinuteForMonth: inputValuesForTariff.FreeMinuteForMonth,
+                CostSms: inputValuesForTariff.CostSms,
+                Id: 0
+            }),
+        })
+            .then((res) => {
+                if (res.status !== 200) {
+                    error()
+                    return res.json();
+                } else {
+                    success()
+                    return res
+                }
+            })
+
+    };
+
+
 
     /**
      * разметка страницы
      */
     return (
         <div className={classes.stats}>
-            <Typography>qwewqeqw</Typography>
+            <ToastContainer />
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="name"
+                id="Name"
                 label="Название"
-                name="name"
-                autoComplete="login"
-                value={name}
-                onChange={setName}
+                name="Name"
+                autoComplete="Name"
+                value={inputValuesForTariff.Name}
+                onChange={handleChangeInputForTariff}
             />
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="costOneMinCallCity"
+                name="CostOneMinCallCity"
                 label="Стоимость звонка в городе"
-                type="costOneMinCallCity"
-                id="costOneMinCallCity"
-                value={costOneMinCallCity}
-                onChange={setCostOneMinCallCity}
+                type="number"
+                id="CostOneMinCallCity"
+                value={inputValuesForTariff.CostOneMinCallCity}
+                onChange={handleChangeInputForTariff}
             />
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="costOneMinCallOutCity"
+                id="CostOneMinCallOutCity"
                 label="Стоимость минуты вне города"
-                name="costOneMinCallOutCity"
-                autoComplete="costOneMinCallOutCity"
-                value={costOneMinCallOutCity}
-                onChange={setCostOneMinCallOutCity}
+                name="CostOneMinCallOutCity"
+                autoComplete="CostOneMinCallOutCity"
+                type="number"
+                value={inputValuesForTariff.CostOneMinCallOutCity}
+                onChange={handleChangeInputForTariff}
             />
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="costOneMinCallInternation"
+                id="CostOneMinCallInternation"
                 label="Стоимость минуты в другую страну"
-                name="costOneMinCallInternation"
-                autoComplete="costOneMinCallInternation"
-                value={costOneMinCallInternation}
-                onChange={setCostOneMinCallInternation}
+                name="CostOneMinCallInternation"
+                type="number"
+                autoComplete="CostOneMinCallInternation"
+                value={inputValuesForTariff.CostOneMinCallInternation}
+                onChange={handleChangeInputForTariff}
             />
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="intGB"
+                name="IntGb"
                 label="ГБ в месяц"
-                type="intGB"
-                id="intGB"
-                value={intGB}
-                onChange={setIntGB}
+                type="number"
+                id="IntGb"
+                value={inputValuesForTariff.IntGb}
+                onChange={handleChangeInputForTariff}
+            />
+            <TextField
+                variant="outlined"
+                margin="normal"
+                type="number"
+                required
+                fullWidth
+                id="Sms"
+                label="СМС"
+                name="Sms"
+                autoComplete="Sms"
+                value={inputValuesForTariff.Sms}
+                onChange={handleChangeInputForTariff}
             />
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="SMS"
-                label="смс"
-                name="SMS"
-                autoComplete="SMS"
-                value={SMS}
-                onChange={setSMS}
-            />
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="isPhysTar"
-                label="Тариф для физичиского / юридического лица"
-                type="isPhysTar"
-                id="isPhysTar"
-                value={isPhysTar}
-                onChange={setIsPhysTar}
-            />
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="costChangeTar"
+                name="CostChangeTar"
                 label="Стоимость смены тарифа"
-                type="costChangeTar"
-                id="costChangeTar"
-                value={costChangeTar}
-                onChange={setCostChangeTar}
+                type="number"
+                id="CostChangeTar"
+                value={inputValuesForTariff.CostChangeTar}
+                onChange={handleChangeInputForTariff}
+            />
+
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="SubcriptionFee"
+                label="Стоимость тарифа в месяц"
+                type="number"
+                id="SubcriptionFee"
+                value={inputValuesForTariff.SubcriptionFee}
+                onChange={handleChangeInputForTariff}
             />
             <TextField
                 variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="FreeMinuteForMonth"
+                label="Минут в месяц"
+                type="number"
+                id="FreeMinuteForMonth"
+                value={inputValuesForTariff.FreeMinuteForMonth}
+                onChange={handleChangeInputForTariff}
+            />
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="CostSms"
+                label="Стоимость смс"
+                type="number"
+                id="CostSms"
+                value={inputValuesForTariff.CostSms}
+                onChange={handleChangeInputForTariff}
+            />
+            <Checkbox
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="IsPhysTar"
+                label="Тариф для физичиского / юридического лица"
+                id="IsPhysTar"
+                checked={inputValuesForTariff.IsPhysTar}
+                onChange={handleChangeCheckboxForTariff}
+            />
+            Тариф для физичиского(true) / юридического(false) лица
+            <Checkbox variant="outlined"
                 margin="normal"
                 required
                 fullWidth
                 name="CanConnectThisTar"
-                label="Можно ли подключить тариф?"
-                type="CanConnectThisTar"
+                text="Можно ли подключить тариф?"
                 id="CanConnectThisTar"
-                value={CanConnectThisTar}
-                onChange={setCanConnectThisTar}
+                checked={inputValuesForTariff.CanConnectThisTar}
+                onChange={handleChangeCheckboxForTariff}
             />
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="subcriptionFee"
-                label="Стоимость тарифа в месяц"
-                type="subcriptionFee"
-                id="subcriptionFee"
-                value={subcriptionFee}
-                onChange={setSubcriptionFee}
-            />
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="freeMinuteForMonth"
-                label="Минут в месяц"
-                type="freeMinuteForMonth"
-                id="freeMinuteForMonth"
-                value={freeMinuteForMonth}
-                onChange={setFreeMinuteForMonth}
-            />
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="costSms"
-                label="Стоимость смс"
-                type="costSms"
-                id="costSms"
-                value={costSms}
-                onChange={setCostSms}
-            />
+            Можно ли подключить тариф?
+            <div>
+                <Button variant="contained" color="secondary" onClick={createTariff}>
+                    Создать
+                </Button>
+            </div>
         </div>
     );
 }

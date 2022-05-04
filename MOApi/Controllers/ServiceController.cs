@@ -74,17 +74,19 @@ namespace MOApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            //var oldConn = _context.ConnectTariffs.Where(i => i.IdClient == tarVM.idClient && i.DateConnectTariffEnd == null).FirstOrDefault();
-            //oldConn.DateConnectTariffEnd = DateTime.Now;
-            var newSer = await _context.ExtraServices.Where(i => i.Name == serVM.Name).FirstOrDefaultAsync();
-            _context.ConnectServices.Add(new ConnectService()
+            var client = await _context.Clients.Where(i => i.Id == serVM.idClient).FirstOrDefaultAsync();
+        var newSer = await _context.ExtraServices.Where(i => i.Name == serVM.Name).FirstOrDefaultAsync();
+            if (client.Balance < newSer.SubscFee)
+            {
+                return BadRequest("Недостаточно средств, пополните баланс");
+            }
+                _context.ConnectServices.Add(new ConnectService()
             {
                 DateConnectBegin = DateTime.Now,
                 DateConnectEnd = DateTime.Now,
                 IdClient = serVM.idClient,
                 IdExtraService = newSer.Id
             });
-            var client = await _context.Clients.Where(i => i.Id == serVM.idClient).FirstOrDefaultAsync();
             
             //_context.TariffPlans.Add(tarVM);
             switch (serVM.Name)

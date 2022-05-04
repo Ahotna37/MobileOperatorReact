@@ -52,6 +52,8 @@ namespace DAL.Repository
                 client.DateConnect = dateCon.DateConnectTariffBegin;
                 client.DateConnect = client.DateConnect.AddMonths(1);
                 var d = (client.DateConnect - DateTime.Now).Days;
+                if (d < 0)
+                    d += 30;
                 // client.Email - это количество дней до обновления баланса
                 client.Email = d.ToString();
                 await _context.SaveChangesAsync();

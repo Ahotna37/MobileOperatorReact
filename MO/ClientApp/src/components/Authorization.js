@@ -143,6 +143,7 @@ export default function SignIn() {
   const [inputValuesForRegister, setInputValuesForRegister] = React.useState({
     LoginPhoneNumber: "",
     Password: "",
+    isPhis: true,
     PasswordConfirm: "",
     NameClient: "",
     SurNameClient: "",
@@ -172,6 +173,7 @@ export default function SignIn() {
       LoginPhoneNumber: inputValuesForRegister.LoginPhoneNumber,
       Password: inputValuesForRegister.Password,
       PasswordConfirm: inputValuesForRegister.PasswordConfirm,
+      isPhis: inputValuesForRegister.isPhis,
       //физ лицо
       NameClient: inputValuesForRegister.NameClient,
       SurNameClient: inputValuesForRegister.SurNameClient,
@@ -198,7 +200,16 @@ export default function SignIn() {
   const [valueRB, setValueRadioTypeClient] = React.useState("phys");
 
   const handleChangeRadioTypeClient = (event) => {
+    console.log(event.target.value)
+    console.log(inputValuesForRegister)
     setValueRadioTypeClient(event.target.value);
+    if (event.target.value === "phys") {
+      setInputValuesForRegister(prev => ({ ...prev, isPhis: true }));
+    }
+    else {
+      console.log(123333)
+      setInputValuesForRegister(prev => ({ ...prev, isPhis: false }));
+    }
   };
   /**
    * разметка страницы

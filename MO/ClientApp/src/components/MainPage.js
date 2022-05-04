@@ -16,6 +16,8 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Client, Service, Tariff } from "../API/methods";
 /**
  * главная страница с данными о клиенте
@@ -64,7 +66,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainPageReturn({ setTitle }) {
   const classes = useStyles();
-
+  const error = () => toast.error(' Недостаточно средств, попоните счет', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+  const success = () => toast.success('Успех!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
   /**
    * хранилище данных клиента
    */
@@ -80,6 +99,7 @@ export default function MainPageReturn({ setTitle }) {
     email: "",
   });
   const getByIdSuccess = (data) => {
+    console.log(data)
     setUser(data);
     const buf = [...tiers];
     buf[0].left = data.freeMin;
@@ -95,7 +115,7 @@ export default function MainPageReturn({ setTitle }) {
   });
   const getTarByIdSuccess = (data) => {
     setTariff(data[0]);
-    localStorage.setItem("idTariff", data[0].id);
+    localStorage.setItem("idTariff", data.id);
   };
   const GetTariffForPhysOrLegal = () => { // вернуть получение тарифа
     Tariff.GetTariffForPhysOrLegal(
@@ -103,7 +123,7 @@ export default function MainPageReturn({ setTitle }) {
       localStorage.getItem("id")
     );
   };
-  
+
   //   const GetTariffForPhysOrLegal = () => {
   // };
 
@@ -138,21 +158,48 @@ export default function MainPageReturn({ setTitle }) {
     },
   ]);
   const onClickAddNewSer = (tier) => {
-    Service.AddNewSerForClient((data) => getClient(), {
-      idClient: localStorage.getItem("id"),
-      Name: tier.name,
-    });
+    // Service.AddNewSerForClient((data) => getClient(), {
+    //   idClient: localStorage.getItem("id"),
+    //   Name: tier.name,
+    // });
+    fetch("https://localhost:5001/api/service/connectnewser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "access-control-expose-headers": "*",
+        "Access-Control-Allow-Credentials": "true",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        idClient: localStorage.getItem("id"),
+        Name: tier.name,
+      }),
+    })
+      .then((res) => {
+        if (res.status !== 204) {
+          return res.json();
+        } else {
+          return res
+        }
+      })
+      .then((res) => success())
+      .then(() => getClient())
+      .catch((res) => error())
+
   };
   useEffect(() => {
     setTitle("Главная");
     getClient();
     GetTariffForPhysOrLegal();
+
   }, []);
   /**
    * разметка страницы
    */
   return (
     <>
+      <ToastContainer />
       <Container maxWidth="sm" component="main" className={classes.heroContent}>
         <Typography
           component="h1"
@@ -241,6 +288,7 @@ export default function MainPageReturn({ setTitle }) {
             </Grid>
           ))}
         </Grid>
+
       </Container>
     </>
   );

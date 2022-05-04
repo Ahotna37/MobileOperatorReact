@@ -31,10 +31,29 @@ namespace MOApi.Controllers
             return _context.TariffPlans;
         }
         /// <summary>
+        /// получение тарифов для физ лиц
+        /// </summary>
+        [HttpGet("listtar/{idClient}")]
+        public async Task<IActionResult> GetTariffForAllPhysOrLegal([FromRoute] string idClient)
+      {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var client = await _context.Clients.Where(i => i.Id == idClient).FirstOrDefaultAsync();
+            var tar = await _context.TariffPlans.Where(i => i.IsPhysTar == client.IsPhysCl).ToListAsync();
+
+            if (tar == null)
+            {
+                return NotFound();
+            }
+            return Ok(tar);
+        }
+        /// <summary>
         /// получение тарифа подключенного к определенному клиенту
         /// </summary>
         [HttpGet("user/{idClient}")]
-        public async Task<IActionResult> GetTariffForPhysOrLegal([FromRoute] string idClient)
+        public async Task<IActionResult> GetTariffForClient([FromRoute] string idClient)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +61,7 @@ namespace MOApi.Controllers
             }
             var client = await  _context.Clients.Where(i => i.Id == idClient).FirstOrDefaultAsync();
             var conTar = await _context.ConnectTariffs.Where(i => i.DateConnectTariffEnd == null && i.IdClient == client.Id).FirstOrDefaultAsync();
-            var tar = await _context.TariffPlans.Where(i => i.IsPhysTar == client.IsPhysCl && i.Id == conTar.IdTariffPlan).ToListAsync();
+            var tar = await _context.TariffPlans.Where(i => i.IsPhysTar == client.IsPhysCl && i.Id == conTar.IdTariffPlan).FirstOrDefaultAsync();
             
             if (tar == null)
             {
@@ -72,16 +91,25 @@ namespace MOApi.Controllers
     /// <summary>
     /// создание тарифа
     /// </summary>
-    [HttpPost]
+        [HttpPost("create")]
+        //[Route("api/tariff")]
         public async Task<IActionResult> CreateNewTariff([FromBody] TariffPlan tar)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            var allTar = _context.TariffPlans.ToList();
+            foreach (var tarOld in allTar)
+            {
+                if (tar.Name == tarOld.Name)
+                {
+                    return BadRequest("Тариф уже существует");
+                }
+            }
             _context.TariffPlans.Add(tar);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetTariff", new { id = tar.Id }, tar);
+            return Ok();
         }
 
         /// <summary>
@@ -96,7 +124,13 @@ namespace MOApi.Controllers
             }
             //var oldConn = _context.ConnectTariffs.Where(i => i.IdClient == tarVM.idClient && i.DateConnectTariffEnd == null).FirstOrDefault();
             //oldConn.DateConnectTariffEnd = DateTime.Now;
+            var client = await _context.Clients.Where(i => i.Id == idClient).FirstOrDefaultAsync();
             var newTar = await _context.TariffPlans.Where(i => i.Id == tarId).FirstOrDefaultAsync();
+            if(client.Balance < newTar.CostChangeTar)
+            {
+                return BadRequest("Недостаточно средств");
+            }
+            client.Balance -= newTar.CostChangeTar;
             var oldTarConnect = await _context.ConnectTariffs.Where(i => i.IdClient == idClient & i.DateConnectTariffEnd == null).FirstOrDefaultAsync();
             oldTarConnect.DateConnectTariffEnd = DateTime.Now;
             _context.ConnectTariffs.Add(new ConnectTariff()
@@ -106,6 +140,9 @@ namespace MOApi.Controllers
                 DateConnectTariffEnd = null,
                 IdTariffPlan = tarId
             });
+            client.FreeMin = newTar.FreeMinuteForMonth;
+            client.FreeGb = newTar.IntGb;
+            client.FreeSms = newTar.Sms;
             //_context.TariffPlans.Add(tarVM);
             await _context.SaveChangesAsync();
             return NoContent();

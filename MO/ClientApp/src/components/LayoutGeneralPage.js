@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   conteinerContent: {
-    height:"inherit",
+    height: "inherit",
     padding: theme.spacing(5, 1),
   },
   link: {
@@ -166,42 +166,66 @@ export default function GeneralPage({ children, noHeader = false, title }) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <Link className={classes.linkForMe} component={RouterLink} to="/">
-          <ListItem button>Главная</ListItem>
-        </Link>
-        <Link
-          className={classes.linkForMe}
-          component={RouterLink}
-          to="/CallsAndSmsPage"
-        >
-          <ListItem button>История</ListItem>
-        </Link>
+        {localStorage.getItem("role") !== "admin" ? (
+          <>
+            <Link className={classes.linkForMe} component={RouterLink} to="/">
+              <ListItem button>Главная</ListItem>
+            </Link>
+            <Link
+              className={classes.linkForMe}
+              component={RouterLink}
+              to="/CallsAndSmsPage"
+            >
+              <ListItem button>История</ListItem>
+            </Link>
 
-        <Link
-          className={classes.linkForMe}
-          component={RouterLink}
-          to="/AddBalance"
-        >
-          <ListItem button>Пополнить баланс</ListItem>
-        </Link>
-        <Link className={classes.linkForMe} component={RouterLink} to="/Tariff">
-          <ListItem button>Тарифы</ListItem>
-        </Link>
-        <Link
-          className={classes.linkForMe}
-          component={RouterLink}
-          to="/Service"
-        >
-          <ListItem button>Услуги</ListItem>
-        </Link>
+            <Link
+              className={classes.linkForMe}
+              component={RouterLink}
+              to="/AddBalance"
+            >
+              <ListItem button>Пополнить баланс</ListItem>
+            </Link>
+            <Link className={classes.linkForMe} component={RouterLink} to="/Tariff">
+              <ListItem button>Тарифы</ListItem>
+            </Link>
+            <Link
+              className={classes.linkForMe}
+              component={RouterLink}
+              to="/Service"
+            >
+              <ListItem button>Услуги</ListItem>
+            </Link>
+          </>
+        ) : null}
         {localStorage.getItem("role") === "admin" ? (
-          <Link
-            className={classes.linkForMe}
-            component={RouterLink}
-            to="/ClientList"
-          >
-            <ListItem button>Список клиентов</ListItem>
-          </Link>
+          <>
+            <Link
+              className={classes.linkForMe}
+              component={RouterLink}
+              to="/ClientList"
+            >
+              <ListItem button>Список клиентов</ListItem>
+            </Link>
+            <Link
+              className={classes.linkForMe}
+              component={RouterLink}
+              to="/Stats"
+            //onClick = {logOut}
+            >
+              {" "}
+              <ListItem button>Статистика</ListItem>
+            </Link>
+            <Link
+              className={classes.linkForMe}
+              component={RouterLink}
+              to="/AdminTariff"
+            //onClick = {logOut}
+            >
+              {" "}
+              <ListItem button>Добавить тариф</ListItem>
+            </Link>
+          </>
         ) : null}
         <Link
           className={classes.linkForMe}
