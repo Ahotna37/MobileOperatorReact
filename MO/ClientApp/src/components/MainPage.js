@@ -99,7 +99,6 @@ export default function MainPageReturn({ setTitle }) {
     email: "",
   });
   const getByIdSuccess = (data) => {
-    console.log(data)
     setUser(data);
     const buf = [...tiers];
     buf[0].left = data.freeMin;
@@ -114,7 +113,7 @@ export default function MainPageReturn({ setTitle }) {
     name: "",
   });
   const getTarByIdSuccess = (data) => {
-    setTariff(data[0]);
+    setTariff(data);
     localStorage.setItem("idTariff", data.id);
   };
   const GetTariffForPhysOrLegal = () => { // вернуть получение тарифа
@@ -123,9 +122,6 @@ export default function MainPageReturn({ setTitle }) {
       localStorage.getItem("id")
     );
   };
-
-  //   const GetTariffForPhysOrLegal = () => {
-  // };
 
   /**
    * данные страницы по-умолчанию для загрузки страницы без загрузки клиента из БД
@@ -158,10 +154,6 @@ export default function MainPageReturn({ setTitle }) {
     },
   ]);
   const onClickAddNewSer = (tier) => {
-    // Service.AddNewSerForClient((data) => getClient(), {
-    //   idClient: localStorage.getItem("id"),
-    //   Name: tier.name,
-    // });
     fetch("https://localhost:5001/api/service/connectnewser", {
       method: "POST",
       headers: {
@@ -199,96 +191,126 @@ export default function MainPageReturn({ setTitle }) {
    */
   return (
     <>
-      <ToastContainer />
-      <Container maxWidth="sm" component="main" className={classes.heroContent}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
-        >
-          Баланс: {user.balance}
-        </Typography>
-        <Typography
-          variant="h5"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          {user.name ? user.surName + " " + user.name : user.nameOrganization}
-        </Typography>
-        {/* <Typography
-          variant="h5"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          Активный тариф: {tariff.name}
-        </Typography> */}
-        <Typography
-          variant="h5"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          {user.phoneNumber}
-        </Typography>
-      </Container>
-      <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier) => (
-            // Enterprise card is full width at sm breakpoint
-            <Grid
-              item
-              key={tier.title}
-              xs={12}
-              sm={tier.title === "Enterprise" ? 12 : 6}
-              md={4}
+      {localStorage.getItem("role") !== "admin" ? (
+        <>
+          <ToastContainer />
+          <Container maxWidth="sm" component="main" className={classes.heroContent}>
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="textPrimary"
+              gutterBottom
             >
-              <Card>
-                <CardHeader
-                  title={tier.title}
-                  subheader={tier.subheader}
-                  titleTypographyProps={{ align: "center" }}
-                  subheaderTypographyProps={{ align: "center" }}
-                  action={tier.title === "Pro" ? <StarIcon /> : null}
-                  className={classes.cardHeader}
-                />
-                <CardContent>
-                  <div className={classes.cardPricing}>
-                    <Typography component="h2" variant="h3" color="textPrimary">
-                      {tier.left}
-                    </Typography>
-                  </div>
-                  <ul>
-                    {tier.description.map((line) => (
-                      <Typography
-                        component="li"
-                        variant="subtitle1"
-                        align="center"
-                        key={line}
-                      >
-                        Осталось дней: {user.email}
-                      </Typography>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    fullWidth
-                    variant={tier.buttonVariant}
-                    color="secondary"
-                    onClick={() => onClickAddNewSer(tier)}
-                  >
-                    {tier.buttonText}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+              Баланс: {user.balance}
+            </Typography>
+            <Typography
+              variant="h5"
+              align="center"
+              color="textSecondary"
+              component="p"
+            >
+              {user.name ? user.surName + " " + user.name : user.nameOrganization}
+            </Typography>
+            <Typography
+              variant="h5"
+              align="center"
+              color="textSecondary"
+              component="p"
+            >
+              Активный тариф: {tariff.name}
+            </Typography>
+            <Typography
+              variant="h5"
+              align="center"
+              color="textSecondary"
+              component="p"
+            >
+              Следующее списание: {tariff.subcriptionFee} рублей
+            </Typography>
+            <Typography
+              variant="h5"
+              align="center"
+              color="textSecondary"
+              component="p"
+            >
+              {user.phoneNumber}
+            </Typography>
+          </Container>
+        </>
+      ) :
+        <>
+          <Container maxWidth="sm" component="main" className={classes.heroContent}>
+            <Typography
+              variant="h5"
+              align="center"
+              color="textSecondary"
+              component="p"
+            >
+              Вы зашли как Администратор
+            </Typography>
 
+          </Container>
+        </>}
+      <Container maxWidth="md" component="main">
+        {localStorage.getItem("role") !== "admin" ? (
+          <>
+            <Grid container spacing={5} alignItems="flex-end">
+
+
+              {tiers.map((tier) => (
+                // Enterprise card is full width at sm breakpoint
+                <Grid
+                  item
+                  key={tier.title}
+                  xs={12}
+                  sm={tier.title === "Enterprise" ? 12 : 6}
+                  md={4}
+                >
+                  <Card>
+                    <CardHeader
+                      title={tier.title}
+                      subheader={tier.subheader}
+                      titleTypographyProps={{ align: "center" }}
+                      subheaderTypographyProps={{ align: "center" }}
+                      action={tier.title === "Pro" ? <StarIcon /> : null}
+                      className={classes.cardHeader}
+                    />
+                    <CardContent>
+                      <div className={classes.cardPricing}>
+                        <Typography component="h2" variant="h3" color="textPrimary">
+                          {tier.left}
+                        </Typography>
+                      </div>
+                      <ul>
+                        {tier.description.map((line) => (
+                          <Typography
+                            component="li"
+                            variant="subtitle1"
+                            align="center"
+                            key={line}
+                          >
+                            Осталось дней: {user.email}
+                          </Typography>
+                        ))}
+                      </ul>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        fullWidth
+                        variant={tier.buttonVariant}
+                        color="secondary"
+                        onClick={() => onClickAddNewSer(tier)}
+                      >
+                        {tier.buttonText}
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </>
+        ) : null}
       </Container>
     </>
   );

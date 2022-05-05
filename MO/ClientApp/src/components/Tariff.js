@@ -157,7 +157,7 @@ export default function Album({ setTitle }) {
                 <Typography>
                   Бесплатные минуты {tarif.freeMinuteForMonth}
                 </Typography>
-                <Typography>Бесплатные СММ {tarif.sms}</Typography>
+                <Typography>Бесплатные смс {tarif.sms}</Typography>
                 <Typography>Интернет {tarif.intGb}</Typography>
                 <Typography>Стоимость минуты в городе {tarif.costOneMinCallCity}</Typography>
                 <Typography>Стоимость минуты вне города {tarif.costOneMinCallInternation}</Typography>

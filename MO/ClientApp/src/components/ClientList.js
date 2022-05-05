@@ -1,4 +1,4 @@
-import { Modal } from "@material-ui/core";
+import { Modal, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 //import Button from "@material-ui/core/Button";
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
   dataGrid: {
-    '.MuiCheckbox-colorPrimary.Mui-checked':{
+    '.MuiCheckbox-colorPrimary.Mui-checked': {
       color: 'red'
     },
   },
@@ -109,11 +109,19 @@ export default function ClientList({ setTitle }) {
    */
   return (
     <>
-      <div style={{ height: 400, width: "100%" }}>
+      <Typography
+        variant="h5"
+        align="center"
+        color="textSecondary"
+        component="p"
+      >
+        Список физических лиц
+      </Typography>
+      <div style={{ height: 650, width: "100%" }}>
         <DataGrid className={classes.dataGrid}
           rows={clientsPhys}
           columns={columnsForPhys}
-          pageSize={5}
+          pageSize={10}
           checkboxSelection
           onSelectionModelChange={onSelectionModelChangePhys}
         />
@@ -121,11 +129,19 @@ export default function ClientList({ setTitle }) {
       <Button variant="contained" color="secondary" onClick={deletePhys}>
         Удалить
       </Button>
-      <div style={{ height: 400, width: "100%" }}>
-        <DataGrid 
+      <Typography
+        variant="h5"
+        align="center"
+        color="textSecondary"
+        component="p"
+      >
+        Список юридических лиц
+      </Typography>
+      <div style={{ height: 650, width: "100%" }}>
+        <DataGrid
           rows={clientsLegal}
           columns={columnsForLegal}
-          pageSize={5}
+          pageSize={10}
           checkboxSelection
           onSelectionModelChange={onSelectionModelChangeLegal}
         />
